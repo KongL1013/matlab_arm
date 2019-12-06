@@ -1,12 +1,30 @@
 %%
 function main
-rosdata
+sub_pub_data
 end
 
-function rosdata
+%% 
+function sub_pub_data
 global pos 
 global orient
-robotpose_sub = rossubscriber('/pose',@doit)
+robotpose_sub = rossubscriber('/pose',@callback)
+pub = rospublisher('/mytalk','std_msgs/Float32');
+msg = rosmessage(pub)
+pause(2)
+while true
+   pos.X 
+   msg.Data = pos.X 
+   send(pub,msg)
+   pause(0.5) %刷新等待时间
+end
+end
+
+
+%% 
+function subdata
+global pos 
+global orient
+robotpose_sub = rossubscriber('/pose',@callback)
 pause(2)
 while true
    pos.X 
@@ -16,22 +34,21 @@ end
 
 
 %% 
-function doit(a,b) %/pose有两个值输入进来,一个是topic属性,一个是message信息
+function callback(a,b) %/pose有两个值输入进来,一个是topic属性,一个是message信息
 global pos 
 global orient
 pos = b.Linear;
 orient  = b.Angular;
 end
 %%
-function pub
-
-while (true)
+function pubdata
 pub = rospublisher('/mytalk','std_msgs/String');
 msg = rosmessage(pub)
-msg.Data = 'matlab'
-send(pub,msg)
-% latchpub = rospublisher('mytalk','IsLatching',true)
-pause(5)
+
+while (true)
+    msg.Data = 'matlab'
+    send(pub,msg)
+    pause(1)
 end 
 end
 
