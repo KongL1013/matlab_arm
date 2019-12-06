@@ -8,14 +8,20 @@ global pos
 global orient
 robotpose_sub = rossubscriber('/pose',@doit)
 pause(2)
-% cc = robotpose_sub.receive
-data = receive(robotpose_sub,10)
-pos = data.Linear
-orient = data.Angular
-pause(1)
-
+while true
+   pos.X 
+   pause(1) %刷新等待时间
+end
 end
 
+
+%% 
+function doit(a,b) %/pose有两个值输入进来,一个是topic属性,一个是message信息
+global pos 
+global orient
+pos = b.Linear;
+orient  = b.Angular;
+end
 %%
 function pub
 
@@ -66,14 +72,7 @@ jointl=6.5;
             thetax(7),thetay(7),thetax(8),thetay(8),thetax(9),thetay(9),thetax(10),thetay(10),thetax(11),thetay(11),thetax(12),thetay(12),Pbx,Pby,Pbz,0); 
 axis equal
 end
-%% 
-function doit(a,b) %/pose有两个值输入进来,一个是topic属性,一个是message信息
-global pos 
-pos;
-a
-b
-b.Linear.X
-end
+
 
 
 
